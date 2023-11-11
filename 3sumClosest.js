@@ -50,3 +50,5 @@ var threeSumClosest = function(nums, target) {
   // return the closest
   return closest;
 };
+
+module.exports = threeSumClosest;
