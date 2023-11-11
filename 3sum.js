@@ -58,3 +58,6 @@ var threeSum = function(nums) {
   // return the result array
   return result;
 };
+
+// export the function
+module.exports = threeSum;
