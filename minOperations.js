@@ -38,22 +38,21 @@ var minOperations = function(nums) {
 
   let result = 0;
 
-  for (let key in count) {
-    let times = Math.floor(count[key] / 3);
-    if (count[key] % 3 == 1) {
-      result += times - 1;
-      count[key] -= (times - 1) * 3;
-    } else {
-      result += times;
-      count[key] -= times * 3;
-    }
-  }
+  Object.keys(count).forEach(key => {
+    let remainingAfter3 = 0;
 
-  for (let key in count) {
-      let times = Math.floor(count[key] / 2);
-      result += times;
-      count[key] -= times * 2;
-  }
+    const times3 = Math.floor(count[key] / 3);
+    if (count[key] % 3 === 1) {
+      result += times3 - 1;
+      remainingAfter3 = (count[key] % 3) + 3;
+    } else {
+      result += times3;
+      remainingAfter3 = count[key] % 3;
+    }
+
+    const times2 = Math.floor(remainingAfter3 / 2);
+    result += times2;
+  });
 
   return result;
 };
