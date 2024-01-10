@@ -14,3 +14,6 @@
 var amountOfTime = function(root, start) {
     
 };
+
+const root = [1,5,3,null,4,10,6,9,2], start = 3
+console.log(amountOfTime(root, start))
