@@ -25,10 +25,10 @@ var amountOfTime = function(root, start) {
 
   const buildGraph = (node, parent) => {
     if (node === null) return;
-    if (!graph.has(node.val)) graph.set(node.val, []);
+    if (!graph.has(node.val)) graph.set(node.val, new Set());
     if (parent !== null) {
-      graph.get(node.val).push(parent.val);
-      graph.get(parent.val).push(node.val);
+      graph.get(node.val).add(parent.val);
+      graph.get(parent.val).add(node.val);
     }
     buildGraph(node.left, node);
     buildGraph(node.right, node);
@@ -38,12 +38,14 @@ var amountOfTime = function(root, start) {
 
   let minutes = 0;
   while (queue.length > 0) {
-    const [node, time] = queue.shift();
+    const [node, time] = queue.pop();
     if (!infected.has(node)) {
       infected.add(node);
       minutes = Math.max(minutes, time);
       for (const neighbor of graph.get(node)) {
-        queue.push([neighbor, time + 1]);
+        if (!infected.has(neighbor)) {
+          queue.unshift([neighbor, time + 1]);
+        }
       }
     }
   }
