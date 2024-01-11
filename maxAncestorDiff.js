@@ -5,10 +5,19 @@ function TreeNode(val, left, right) {
 }
  
 var maxAncestorDiff = function(root) {
-    
+  let maxDiff = 0;
+  const diff = (node, min, max) => {
+    if (node === null) return;
+    maxDiff = Math.max(maxDiff, Math.abs(node.val - min), Math.abs(node.val - max));
+    min = Math.min(min, node.val);
+    max = Math.max(max, node.val);
+    diff(node.left, min, max);
+    diff(node.right, min, max);
+  };
+  diff(root, root.val, root.val);
+  return maxDiff;
 };
 
-root = [8,3,10,1,6,null,14,null,null,4,7,13]
 const root = new TreeNode(
   8,
   new TreeNode(3, new TreeNode(1), new TreeNode(6, new TreeNode(4), new TreeNode(7))),
