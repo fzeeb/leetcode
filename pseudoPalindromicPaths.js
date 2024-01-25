@@ -24,35 +24,28 @@ function TreeNode(val, left, right) {
 }
 
 var pseudoPalindromicPaths  = function(root) {
-  let count = 0;
-  const dfs = (node, path) => {
-    if (node === null) return;
-    path.push(node.val);
-    if (node.left === null && node.right === null) {
-      if (isPalindrome(path)) count++;
-      path.pop();
-      return;
-    }
-    dfs(node.left, path);
-    dfs(node.right, path);
-    path.pop();
-  };
-  dfs(root, []);
-  return count;
-};
+  const count = new Array(10).fill(0);
+  let result = 0;
 
-function isPalindrome(arr) {
-  const map = new Map();
-  for (const num of arr) {
-    if (!map.has(num)) map.set(num, 0);
-    map.set(num, map.get(num) + 1);
-  }
-  let oddCount = 0;
-  for (const [key, val] of map) {
-    if (val % 2 === 1) oddCount++;
-  }
-  return oddCount <= 1;
-}
+  const dfs = (node) => {
+    if (node === null) return;
+    count[node.val]++;
+    if (node.left === null && node.right === null) {
+      let odd = 0;
+      for (let i = 0; i < 10; i++) {
+        if (count[i] % 2 === 1) odd++;
+      }
+      if (odd <= 1) result++;
+    } else {
+      dfs(node.left);
+      dfs(node.right);
+    }
+    count[node.val]--;
+  };
+
+  dfs(root);
+  return result;
+};
 
 const root = new TreeNode(
   2,
