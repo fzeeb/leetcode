@@ -13,28 +13,21 @@ Return the modified array after rearranging the elements to satisfy the aforemen
  * @return {number[]}
  */
 var rearrangeArray = function(nums) {
+  let result = [];
+  let positives = [];
+  let negatives = [];
   for (let i = 0; i < nums.length; i++) {
-    if (i % 2 === 0 && nums[i] < 0) {
-      for (let j = i + 1; j < nums.length; j++) {
-        if (nums[j] > 0) {
-          let temp = nums[i];
-          nums[i] = nums[j];
-          nums[j] = temp;
-          break;
-        }
-      }
-    } else if (i % 2 !== 0 && nums[i] > 0) {
-      for (let j = i + 1; j < nums.length; j++) {
-        if (nums[j] < 0) {
-          let temp = nums[i];
-          nums[i] = nums[j];
-          nums[j] = temp;
-          break;
-        }
-      }
+    if (nums[i] < 0) {
+      negatives.push(nums[i]);
+    } else {
+      positives.push(nums[i]);
     }
   }
-  return nums;
+  for (let j = 0; j < positives.length; j++) {
+    result.push(positives[j]);
+    result.push(negatives[j]);
+  }
+  return result;
 };
 
 const nums = [3,1,-2,-5,2,-4];
