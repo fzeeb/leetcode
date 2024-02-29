@@ -22,7 +22,7 @@ def is_even_odd_tree(root)
   level = 0
   while !queue.empty?
     size = queue.size
-    prev = level.even? ? 0 : 10**6
+    prev = level.even? ? 0 : 10**6 + 1
     size.times do
       node = queue.shift
       if level.even?
