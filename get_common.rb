@@ -7,13 +7,8 @@ Note that an integer is said to be common to nums1 and nums2 if both arrays have
 # @param {Integer[]} nums2
 # @return {Integer}
 def get_common(nums1, nums2)
-  nums = (nums1.uniq << nums2.uniq).flatten!.sort!
-  nums.each_with_index do |n, i|
-    if n == nums[i + 1]
-      return n
-    end
-  end
-  return -1
+  common_elements = nums1 & nums2
+  common_elements.empty? ? -1 : common_elements.min
 end
 
 # Example 1
