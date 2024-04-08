@@ -20,15 +20,13 @@ Constraints:
 """
 class Solution:
   def countStudents(self, students: List[int], sandwiches: List[int]) -> int:
-    count = 0
-    while len(students) > 0:
-      if students[0] == sandwiches[0]:
-        students.pop(0)
-        sandwiches.pop(0)
-        count = 0
-      else:
-        students.append(students.pop(0))
-        count += 1
-      if count == len(students):
-        break
-    return len(students)
+        circular = students.count(0)
+        square = students.count(1)
+        for sandwich in sandwiches:
+            if sandwich == 0 and circular > 0:
+                circular -= 1
+            elif sandwich == 1 and square > 0:
+                square -= 1
+            else:
+                return circular + square
+        return 0

@@ -21,19 +21,16 @@ Constraints:
 # @param {Integer[]} sandwiches
 # @return {Integer}
 def count_students(students, sandwiches)
-    count = 0
-    while students.length > 0
-        if students[0] == sandwiches[0]
-            students.shift
-            sandwiches.shift
-            count = 0
+    circular = students.count(0)
+    square = students.count(1)
+    sandwiches.each do |sandwich|
+        if sandwich == 0 && circular > 0
+            circular -= 1
+        elsif sandwich == 1 && square > 0
+            square -= 1
         else
-            students.push(students.shift)
-            count += 1
-        end
-        if count == students.length
-            break
+            return circular + square
         end
     end
-    return students.length
+    return 0
 end

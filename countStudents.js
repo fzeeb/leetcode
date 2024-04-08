@@ -23,22 +23,19 @@ Constraints:
  * @return {number}
  */
 var countStudents = function(students, sandwiches) {
-    let count = 0;
-    while (students.length > 0) {
-        if (students[0] === sandwiches[0]) {
-            students.shift();
-            sandwiches.shift();
-            count = 0;
+    let circular = students.filter(s => s === 0).length;
+    let square = students.filter(s => s === 1).length;
+    for (let sandwich of sandwiches) {
+        if (sandwich === 0 && circular > 0) {
+            circular -= 1;
+        } else if (sandwich === 1 && square > 0) {
+            square -= 1;
         } else {
-            students.push(students.shift());
-            count++;
-        }
-        if (count === students.length) {
-            break;
+            return circular + square;
         }
     }
-    return students.length;
+    return 0;
 };
 
 let students = [1,1,0,0], sandwiches = [0,1,0,1];
-console.log(countStudents(students, sandwiches)) // 0
+console.log(countStudents(students, sandwiches)); // 0
