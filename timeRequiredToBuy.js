@@ -20,23 +20,19 @@ Constraints:
  * @return {number}
  */
 var timeRequiredToBuy = function(tickets, k) {
-    let n = tickets.length;
-    let time = 0;
-    let queue = [];
-    for (let i = 0; i < n; i++) {
-      queue.push([tickets[i], i]);
-    }
-    while (queue.length > 0) {
-      let [ticket, index] = queue.shift();
-      if (ticket > 1) {
-        queue.push([ticket - 1, index]);
+  let time = 0;
+  while (tickets[k] > 0) {
+    for (let i = 0; i < tickets.length; i++) {
+      if (tickets[i] > 0) {
+        tickets[i] -= 1;
+        time += 1;
+        if (i === k && tickets[k] === 0) {
+          return time;
+        }
       }
-      if (index === k && ticket === 1) {
-        return time + 1;
-      }
-      time++;
     }
-    return time;
+  }
+  return time;
 };
 
 let tickets = [2,3,2], k = 2
