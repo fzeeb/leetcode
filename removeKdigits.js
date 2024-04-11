@@ -14,7 +14,6 @@ Constraints:
  */
 var removeKdigits = function(num, k) {
     let stack = [];
-    num = num.toString();
     for (let i = 0; i < num.length; i++) {
         while (stack.length > 0 && k > 0 && stack[stack.length - 1] > num[i]) {
             stack.pop();
@@ -30,6 +29,6 @@ var removeKdigits = function(num, k) {
     return result.length > 0 ? result : '0';
 };
 
-console.log(removeKdigits(1432219, 3)); // Output: "1219"
-console.log(removeKdigits(10200, 1)); // Output: "200"
-console.log(removeKdigits(10, 2)); // Output: "0"
+console.log(removeKdigits("1432219", 3)); // Output: "1219"
+console.log(removeKdigits("10200", 1)); // Output: "200"
+console.log(removeKdigits("10", 2)); // Output: "0"

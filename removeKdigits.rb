@@ -12,7 +12,6 @@ Constraints:
 # @return {String}
 def remove_kdigits(num, k)
   stack = []
-  num = num.to_s
   i = 0
   while i < num.length
     while stack.length > 0 && k > 0 && stack[-1] > num[i]
