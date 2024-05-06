@@ -38,14 +38,7 @@ class ListNode:
 class Solution:
     def removeNodes(self, head: Optional[ListNode]) -> Optional[ListNode]:
         # reverse the linked list
-        prev = None
-        current = head
-        while current:
-            temp = current.next
-            current.next = prev
-            prev = current
-            current = temp
-        head = prev
+        head = self.reverseList(head)
         # remove the nodes with a greater value to the right
         prev = None
         current = head
@@ -59,6 +52,10 @@ class Solution:
                 prev = current
             current = current.next
         # reverse the linked list back
+        head = self.reverseList(head)
+        return head
+    
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         prev = None
         current = head
         while current:
@@ -66,5 +63,4 @@ class Solution:
             current.next = prev
             prev = current
             current = temp
-        head = prev
-        return head
+        return prev
