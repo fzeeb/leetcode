@@ -48,18 +48,18 @@ Add 0 if the decreased value is negative.
 # @param {Integer} k
 # @return {Integer}
 def maximum_happiness_sum(happiness, k)
+  t = 0
   max_happiness = 0
-  happiness = happiness.sort.reverse()
-  while k > 0
-      max_happiness = max_happiness + happiness.shift
-      happiness.each_with_index do |n, i|
-          if n > 0
-              happiness[i] = n - 1
-          end
-      end
-      k = k - 1
+  happiness = happiness.sort.reverse
+  k.times do
+    t += 1
+    break if happiness[0] <= 0
+    max_happiness += happiness.shift
+    if happiness[0] <= 0
+      happiness[0] -= t
+    end
   end
-  return max_happiness
+  max_happiness
 end
 
 puts maximum_happiness_sum([1,2,3], 2) == 4
