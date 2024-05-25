@@ -46,7 +46,6 @@ class Solution:
             result = []
             for i in range(index + 1, len(s) + 1):
                 word = s[index:i]
-                print(word)
                 if word in word_set:
                     sentences = wordBreakHelper(i)
                     for sentence in sentences:
