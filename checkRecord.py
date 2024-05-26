@@ -28,42 +28,33 @@ Constraints:
 """
 class Solution:
     def checkRecord(self, n: int) -> int:
-        # Step 1: Define the modulo value
         MOD = 10**9 + 7
+
+        # dp[i][j][k] means the number of valid sequences of length i with j 'A's and ending with k 'L's
+        dp = [[[0] * 3 for _ in range(2)] for _ in range(n + 1)]
         
-        # Step 2: Create a memoization table to store the number of possible attendance records
-        memo = {}
+        # Base case: Length 0, one empty sequence
+        dp[0][0][0] = 1
         
-        # Step 3: Create a recursive function to find the number of possible attendance records
-        def checkRecordHelper(index, absent, late):
-            # Base case: If the index is already in the memo table, return the value
-            if (index, absent, late) in memo:
-                return memo[(index, absent, late)]
-            
-            # Base case: If the index is the length of the string, return 1
-            if index == n:
-                return 1
-            
-            # Recursive case: Find the number of possible attendance records for the rest of the string
-            result = 0
-            
-            # Case 1: Add a 'P' for present
-            result += checkRecordHelper(index + 1, absent, 0)
-            
-            # Case 2: Add an 'A' for absent
-            if absent < 1:
-                result += checkRecordHelper(index + 1, absent + 1, 0)
-            
-            # Case 3: Add an 'L' for late
-            if late < 2:
-                result += checkRecordHelper(index + 1, absent, late + 1)
-            
-            # Store the result in the memo table and return it
-            memo[(index, absent, late)] = result % MOD
-            return memo[(index, absent, late)]
+        for i in range(1, n + 1):
+            for j in range(2):
+                for k in range(3):
+                    # Add 'P'
+                    dp[i][j][0] = (dp[i][j][0] + dp[i-1][j][k]) % MOD
+                    # Add 'L'
+                    if k < 2:
+                        dp[i][j][k+1] = (dp[i][j][k+1] + dp[i-1][j][k]) % MOD
+                    # Add 'A'
+                    if j < 1:
+                        dp[i][j+1][0] = (dp[i][j+1][0] + dp[i-1][j][k]) % MOD
         
-        # Step 4: Call the recursive function with the initial values
-        return checkRecordHelper(0, 0, 0)
+        # Sum all valid sequences of length n
+        result = 0
+        for j in range(2):
+            for k in range(3):
+                result = (result + dp[n][j][k]) % MOD
+        
+        return result
         
 print (Solution().checkRecord(2)) # 8
 print (Solution().checkRecord(1)) # 3
