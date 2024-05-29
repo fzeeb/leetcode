@@ -38,24 +38,15 @@ Simulate the steps described in the binary string.
 """
 class Solution:
     def numSteps(self, s: str) -> int:
-        n = len(s)
-        steps = 0
-        carry = 0
-        for i in range(n-1, 0, -1):
-            if s[i] == '0':
-                if carry == 0:
-                    steps += 1
-                else:
-                    steps += 2
-            else:
-                if carry == 0:
-                    steps += 2
-                    carry = 1
-                else:
-                    steps += 1
-        if carry == 1:
-            steps += 1
-        return steps
+      num = int(s, 2)
+      steps = 0
+      while num > 1:
+        if num % 2 == 0:
+          num //= 2
+        else:
+          num += 1
+        steps += 1
+      return steps
 
 print (Solution().numSteps("1101")) # 6
 print (Solution().numSteps("10")) # 1
