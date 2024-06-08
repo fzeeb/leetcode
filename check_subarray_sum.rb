@@ -33,20 +33,21 @@ Constraints:
 # @return {Boolean}
 def check_subarray_sum(nums, k)
   return false if nums.length < 2
-  left = 0
-  right = 1
-  while left < nums.length - 1
-      sum = nums[left..right].sum
-      if sum % k == 0
-          return true
-      end
-      if right == nums.length - 1
-          left += 1
-          right = left + 1
-      else
-          right += 1
-      end   
+
+  # Initialize the hash map with key 0 and value -1
+  sum_mod_k_map = {0 => -1}
+  sum = 0
+
+  nums.each_with_index do |num, i|
+    sum += num
+    sum %= k if k != 0
+    if sum_mod_k_map.has_key?(sum)
+      return true if i - sum_mod_k_map[sum] > 1
+    else
+      sum_mod_k_map[sum] = i
+    end
   end
+
   false
 end
 
