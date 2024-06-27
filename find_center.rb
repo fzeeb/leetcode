@@ -31,22 +31,7 @@ Any two edges must have a common node, which is the center.
 # @param {Integer[][]} edges
 # @return {Integer}
 def find_center(edges)
-  graph = {}
-  edges.each do |edge|
-    u, v = edge
-    graph[u] ||= []
-    graph[u] << v
-    graph[v] ||= []
-    graph[v] << u
-  end
-  center = nil
-  graph.each do |node, neighbors|
-    if neighbors.size > 1
-      center = node
-      break
-    end
-  end
-  center
+  edges.flatten.group_by(&:itself).transform_values(&:size).select { |k, v| v > 1 }.keys.first
 end
 
 puts find_center([[1,2],[2,3],[4,2]]) # Expected: 2
