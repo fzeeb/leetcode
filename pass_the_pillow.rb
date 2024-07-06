@@ -29,25 +29,18 @@ While time is positive, update the current index with the current direction. If 
 # @param {Integer} time
 # @return {Integer}
 def pass_the_pillow(n, time)
-  start = 1
-  dir = 0
-  while time > 0
-      if dir == 0
-          start += 1
-          time -= 1
-      end
-      if dir == 1
-          start -= 1
-          time -= 1
-      end
-      if start == 1
-          dir = 0
-      end
-      if start == n
-          dir = 1
-      end
-  end
-  start
+    i = 1
+    direction = 1
+    while time > 0
+        if i == n
+            direction = -1
+        elsif i == 1
+            direction = 1
+        end
+        i += direction
+        time -= 1
+    end
+    return i
 end
 
 puts pass_the_pillow(4, 5) # 2
