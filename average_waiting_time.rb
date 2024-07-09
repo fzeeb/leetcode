@@ -42,17 +42,20 @@ Update the running time by the time when the chef starts preparing + preparation
 # @return {Float}
 def average_waiting_time(customers)
   total_waiting_time = 0
-  chef = 0
-  customers.each do |a, d|
-      if chef <= a
-          total_waiting_time += d
-          chef = a + d
-      elsif chef > a
-          total_waiting_time = total_waiting_time + (chef - a) + d
-          chef = chef + d
-      end
+  chef_finish_time = 0
+
+  customers.each do |arrival, preparation_time|
+    if chef_finish_time <= arrival
+      total_waiting_time += preparation_time
+      chef_finish_time = arrival + preparation_time
+    else
+      total_waiting_time += chef_finish_time - arrival + preparation_time
+      chef_finish_time += preparation_time
+    end
   end
-  return total_waiting_time.to_f / customers.length
+
+  average_waiting_time = total_waiting_time.to_f / customers.length
+  return average_waiting_time
 end
 
 puts average_waiting_time([[1,2],[2,5],[4,3]]) # Expected 5.0
