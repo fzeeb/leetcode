@@ -36,19 +36,16 @@ Simulate the process but don’t move the pointer beyond the main folder.
 def min_operations(logs)
   counter = 0
   logs.each do |log|
-      if log == "../" && counter > 0
-          counter -= 1
-      elsif log == "../" && counter == 0
-          counter += 0
-      elsif log == "./"
-          counter += 0
-      else
-          counter += 1
-      end
+    if log == "../" && counter > 0
+      counter -= 1
+    elsif log != "./" && log != "../"
+      counter += 1
+    end
   end
-  return counter
+  counter
 end
 
 puts min_operations(["d1/","d2/","../","d21/","./"]) == 2
 puts min_operations(["d1/","d2/","./","d3/","../","d31/"]) == 3
 puts min_operations(["d1/","../","../","../"]) == 0
+puts min_operations(["./","../","./"]) == 0
