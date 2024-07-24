@@ -51,9 +51,10 @@ To maintain the same relative order for equal mapped values, use the index in th
 # @param {Integer[]} nums
 # @return {Integer[]}
 def sort_jumbled(mapping, nums)
-  nums.sort_by { |num| num.to_s.chars.map { |c| mapping[c.to_i] }.join }
+  nums.sort_by { |num| num.to_s.chars.map { |c| mapping[c.to_i] }.join.to_i }
 end
 
 # Test cases
 puts sort_jumbled([8,9,4,0,2,1,3,5,7,6], [991,338,38]).to_s # [338,38,991]
 puts sort_jumbled([0,1,2,3,4,5,6,7,8,9], [789,456,123]).to_s # [123,456,789]
+puts sort_jumbled([5,6,8,7,4,0,3,1,9,2], [7686,97012948,84234023,2212638,99]).to_s # [99,7686,2212638,97012948,84234023]
