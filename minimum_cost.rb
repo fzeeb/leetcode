@@ -53,29 +53,39 @@ We can also use Floyd Warshall's algorithm to precompute all the results.
 # @param {Integer[]} cost
 # @return {Integer}
 def minimum_cost(source, target, original, changed, cost)
-  n = source.length
-  dist = Array.new(26) { Array.new(26, Float::INFINITY) }
-  for i in 0..25
-    dist[i][i] = 0
+  # Initialize the distance matrix with infinity
+  inf = Float::INFINITY
+  dist = Array.new(26) { Array.new(26, inf) }
+  
+  # Set the distance from each character to itself as 0
+  26.times { |i| dist[i][i] = 0 }
+  
+  # Build the initial graph based on the given transformations
+  original.zip(changed, cost).each do |orig, chng, cst|
+    i, j = orig.ord - 'a'.ord, chng.ord - 'a'.ord
+    dist[i][j] = [dist[i][j], cst].min
   end
-  for i in 0..original.length-1
-    dist[original[i].ord - 'a'.ord][changed[i].ord - 'a'.ord] = [dist[original[i].ord - 'a'.ord][changed[i].ord - 'a'.ord], cost[i]].min
-  end
-  for k in 0..25
-    for i in 0..25
-      for j in 0..25
-        dist[i][j] = [dist[i][j], dist[i][k] + dist[k][j]].min
+  
+  # Floyd-Warshall algorithm
+  26.times do |k|
+    26.times do |i|
+      26.times do |j|
+        if dist[i][k] + dist[k][j] < dist[i][j]
+          dist[i][j] = dist[i][k] + dist[k][j]
+        end
       end
     end
   end
-  ans = 0
-  for i in 0..n-1
-    if dist[source[i].ord - 'a'.ord][target[i].ord - 'a'.ord] == Float::INFINITY
-      return -1
-    end
-    ans += dist[source[i].ord - 'a'.ord][target[i].ord - 'a'.ord]
+  
+  # Calculate the total cost
+  total_cost = 0
+  source.chars.zip(target.chars).each do |s, t|
+    i, j = s.ord - 'a'.ord, t.ord - 'a'.ord
+    return -1 if dist[i][j] == inf
+    total_cost += dist[i][j]
   end
-  return ans
+  
+  total_cost
 end
 
 # Test cases
