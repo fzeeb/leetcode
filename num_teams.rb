@@ -33,13 +33,32 @@ BruteForce, check all possibilities.
 def num_teams(rating)
   n = rating.size
   count = 0
-  (0...n).each do |i|
-    (i+1...n).each do |j|
-      (j+1...n).each do |k|
-        count += 1 if (rating[i] < rating[j] && rating[j] < rating[k]) || (rating[i] > rating[j] && rating[j] > rating[k])
+
+  (0...n).each do |j|
+    left_smaller = 0
+    left_larger = 0
+    right_smaller = 0
+    right_larger = 0
+
+    (0...j).each do |i|
+      if rating[i] < rating[j]
+        left_smaller += 1
+      elsif rating[i] > rating[j]
+        left_larger += 1
       end
     end
+
+    (j+1...n).each do |k|
+      if rating[k] < rating[j]
+        right_smaller += 1
+      elsif rating[k] > rating[j]
+        right_larger += 1
+      end
+    end
+
+    count += left_smaller * right_larger + left_larger * right_smaller
   end
+
   count
 end
 
