@@ -32,13 +32,7 @@ The age of the person at index i is equal to details[i][11]*10+details[i][12].
 # @param {String[]} details
 # @return {Integer}
 def count_seniors(details)
-  count = 0
-  details.each do |detail|
-      if detail[11,2].to_i > 60
-          count += 1
-      end
-  end
-  return count
+  details.count { |detail| detail[11..12].to_i > 60 }
 end
 
 # Test cases
