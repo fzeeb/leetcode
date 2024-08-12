@@ -26,7 +26,7 @@ Constraints:
     -10^4 <= val <= 10^4
     At most 10^4 calls will be made to add.
     It is guaranteed that there will be at least k elements in the array when you search for the k^th element.
-=end  
+=end 
 class KthLargest
 
 =begin
@@ -35,7 +35,8 @@ class KthLargest
 =end
     def initialize(k, nums)
       @k = k
-      @nums = nums
+      @heap = Containers::MinHeap.new
+      nums.each { |num| add(num) }
     end
   
 =begin
@@ -43,9 +44,9 @@ class KthLargest
     :rtype: Integer
 =end
     def add(val)
-      @nums.push(val)
-      @nums.sort!
-      @nums[-@k]
+      @heap.push(val)
+      @heap.pop if @heap.size > @k
+      @heap.min
     end
 
   end
