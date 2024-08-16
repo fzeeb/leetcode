@@ -23,15 +23,18 @@ Constraints:
 # @param {Integer[][]} arrays
 # @return {Integer}
 def max_distance(arrays)
-  min = 10**4
-  max = -10**4
-  arrays.each do |array|
-      min = [min, array.min].min
-      max = [max, array.max].max
+  min = arrays[0][0]
+  max = arrays[0][-1]
+  max_distance = 0
+  (1...arrays.length).each do |i|
+    max_distance = [max_distance, (arrays[i][0] - max).abs, (arrays[i][-1] - min).abs].max
+    min = [min, arrays[i][0]].min
+    max = [max, arrays[i][-1]].max
   end
-  max - min
+  max_distance
 end
 
 # Test cases
 puts max_distance([[1,2,3],[4,5],[1,2,3]]) == 4
 puts max_distance([[1],[1]]) == 0
+puts max_distance([[1,4],[0,5]]) == 4
