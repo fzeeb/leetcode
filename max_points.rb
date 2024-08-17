@@ -43,16 +43,34 @@ dp[i][j] is the maximum number of points you can have if points[i][j] is the mos
 def max_points(points)
   m = points.length
   n = points[0].length
-  dp = Array.new(m) { Array.new(n, 0) }
-  dp[0] = points[0]
+  dp = points[0].dup
+
   (1...m).each do |i|
-    (0...n).each do |j|
-      (0...n).each do |k|
-        dp[i][j] = [dp[i][j], dp[i-1][k] + points[i][j] - (j - k).abs].max
-      end
+    left_dp = Array.new(n, 0)
+    right_dp = Array.new(n, 0)
+
+    # Left-to-right pass
+    left_dp[0] = dp[0]
+    (1...n).each do |j|
+      left_dp[j] = [left_dp[j-1] - 1, dp[j]].max
     end
+
+    # Right-to-left pass
+    right_dp[n-1] = dp[n-1]
+    (n-2).downto(0) do |j|
+      right_dp[j] = [right_dp[j+1] - 1, dp[j]].max
+    end
+
+    # Calculate new dp for the current row
+    new_dp = Array.new(n, 0)
+    (0...n).each do |j|
+      new_dp[j] = points[i][j] + [left_dp[j], right_dp[j]].max
+    end
+
+    dp = new_dp
   end
-  dp[m-1].max
+
+  dp.max
 end
 
  # Test cases
