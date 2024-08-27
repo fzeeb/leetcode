@@ -50,7 +50,6 @@ def max_probability(n, edges, succ_prob, start_node, end_node)
     graph[edge[1]] << [edge[0], succ_prob[i]]
   end
   dist = Array.new(n, 0)
-  p dist
   dist[start_node] = 1
   pq = [[-1, start_node]]
   while !pq.empty?
