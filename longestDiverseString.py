@@ -1,3 +1,5 @@
+from heapq import heappush, heappop
+
 """
 A string s is called happy if it satisfies the following conditions:
 
@@ -32,58 +34,33 @@ Hint 2
 Use the letter with the maximum current limit that can be added without breaking the condition.
 """
 class Solution:
-    def longestDiverseString(self, a: int, b: int, c: int) -> str:
-        answer = ""
-        tmp = ""
-        n = a + b + c
-        while n > 0:
-            if a >= b and a >= c and a > 0:
-                if tmp != "aa":
-                    answer += "a"
-                    a -= 1
-                    tmp += "a"
-                else:
-                    if b > 0:
-                        answer += "b"
-                        b -= 1
-                        tmp = "b"
-                    elif c > 0:
-                        answer += "c"
-                        c -= 1
-                        tmp = "c"
-            elif b >= a and b >= c and b > 0:
-                if tmp != "bb":
-                    answer += "b"
-                    b -= 1
-                    tmp += "b"
-                else:
-                    if a > 0:
-                        answer += "a"
-                        a -= 1
-                        tmp = "a"
-                    elif c > 0:
-                        answer += "c"
-                        c -= 1
-                        tmp = "c"
-            elif c >= a and c >= b and c > 0:
-                if tmp != "cc":
-                    answer += "c"
-                    c -= 1
-                    tmp += "c"
-                else:
-                    if a > 0:
-                        answer += "a"
-                        a -= 1
-                        tmp = "a"
-                    elif b > 0:
-                        answer += "b"
-                        b -= 1
-                        tmp = "b"
-
-            tmp = tmp[-2:]
-            n -= 1
+    def longestDiverseString(self, a: int, b: int, c: int) -> str: 
+        max_heap = []
+        if a > 0:
+            heappush(max_heap, (-a, 'a'))
+        if b > 0:
+            heappush(max_heap, (-b, 'b'))
+        if c > 0:
+            heappush(max_heap, (-c, 'c'))
         
-        return answer
+        result = []
+        
+        while max_heap:
+            count1, char1 = heappop(max_heap)
+            if len(result) >= 2 and result[-1] == result[-2] == char1:
+                if not max_heap:
+                    break
+                count2, char2 = heappop(max_heap)
+                result.append(char2)
+                if count2 + 1 < 0:
+                    heappush(max_heap, (count2 + 1, char2))
+                heappush(max_heap, (count1, char1))
+            else:
+                result.append(char1)
+                if count1 + 1 < 0:
+                    heappush(max_heap, (count1 + 1, char1))
+        
+        return ''.join(result)
         
 
 # Test cases
