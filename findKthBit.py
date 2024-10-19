@@ -37,25 +37,17 @@ Since n is small, we can simply simulate the process of constructing S1 to S_n.
 """
 class Solution:
     def findKthBit(self, n: int, k: int) -> str:
-        s = "0"
+      def invert(s: str) -> str:
+        return ''.join('1' if c == '0' else '0' for c in s)
 
-        if n == 1:
-            return s
+      def reverse(s: str) -> str:
+        return s[::-1]
 
-        for i in range(1, n):
-            invert = list(s)
-            for j in range (0, len(invert)):
-                if invert[j] == "1":
-                    invert[j] = "0"
-                elif invert[j] == "0":
-                    invert[j] = "1"
-
-            inverted = ''.join(invert)
-            rev = ''.join(reversed(inverted))
-
-            s += "1" + rev
-        
-        return s[k-1]
+      s = "0"
+      for i in range(1, n):
+        s = s + "1" + reverse(invert(s))
+      
+      return s[k-1]
         
 
 # Test Cases
