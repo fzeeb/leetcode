@@ -30,19 +30,19 @@ Try each possible substring at every position and backtrack if a complete split 
 """
 class Solution:
     def maxUniqueSplit(self, s: str) -> int:
-        substrings = set()
-        first = 0
-        last = 1
-
-        while last <= len(s):
-            if s[first:last] not in substrings:
-                substrings.add(s[first:last])
-                first = last
-                last = first + 1
-            else:
-                last += 1
-
-        return len(substrings)
+        def backtrack(start, seen):
+            if start == len(s):
+                return len(seen)
+            max_splits = 0
+            for end in range(start + 1, len(s) + 1):
+                substring = s[start:end]
+                if substring not in seen:
+                    seen.add(substring)
+                    max_splits = max(max_splits, backtrack(end, seen))
+                    seen.remove(substring)
+            return max_splits
+        
+        return backtrack(0, set())
     
 # Test Cases
 s = Solution()
