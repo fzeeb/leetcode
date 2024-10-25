@@ -36,16 +36,11 @@ from typing import List
 class Solution:
     def removeSubfolders(self, folder: List[str]) -> List[str]:
         folder.sort()
-        to_remove = set()
-        l = len(folder)
-
-        for i in range(0, l - 1):
-            current = folder[i]
-            for j in range(i+1, l):
-                if folder[j].startswith(current + '/'):
-                    to_remove.add(folder[j])
-                    
-        return [f for f in folder if f not in to_remove]
+        res = []
+        for f in folder:
+            if not res or not f.startswith(res[-1] + '/'):
+                res.append(f)
+        return res
     
 # Test Cases
 s = Solution()
