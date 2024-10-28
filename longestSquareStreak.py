@@ -33,25 +33,19 @@ Constraints:
 from typing import List
 class Solution:
     def longestSquareStreak(self, nums: List[int]) -> int:
-        nums_set = set(nums)
-        streak = 1
+      nums_set = set(nums)
+      max_streak = -1
 
-        for num in nums:
-            tmp_streak = 1
-            n = num
-            while True:
-                if n * n in nums_set:
-                    tmp_streak += 1
-                    n = n * n
-                else:
-                    break
+      for num in nums:
+        current_streak = 1
+        current_num = num
+        while current_num * current_num in nums_set:
+          current_streak += 1
+          current_num *= current_num
 
-            streak = max(tmp_streak, streak)
+        max_streak = max(max_streak, current_streak)
 
-        if streak > 1:
-            return streak
-        else:
-            return -1
+      return max_streak if max_streak > 1 else -1
         
 # Test Cases
 s = Solution()
