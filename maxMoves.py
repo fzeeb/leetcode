@@ -34,26 +34,21 @@ The final answer will be the maximum value in cells of the first column.
 from typing import List
 class Solution:
     def maxMoves(self, grid: List[List[int]]) -> int:
-        m, n = len(grid), len(grid[0])
-        dp = [[0 for _ in range(m)] for _ in range(n)]
+      m, n = len(grid), len(grid[0])
+      dp = [[0] * n for _ in range(m)]
+      
+      # Traverse the grid from the last column to the first column
+      for col in range(n - 2, -1, -1):
+          for row in range(m):
+              # Check all three possible moves: (row-1, col+1), (row, col+1), (row+1, col+1)
+              for dr in [-1, 0, 1]:
+                  nr, nc = row + dr, col + 1
+                  # Ensure the new row and column are within bounds
+                  if 0 <= nr < m and 0 <= nc < n and grid[nr][nc] > grid[row][col]:
+                      dp[row][col] = max(dp[row][col], dp[nr][nc] + 1)
 
-        max_moves = 0
-
-        for row in range(n):
-            stack = [(row, 0, 0)]
-
-            while stack:
-                r, c, moves = stack.pop()
-                max_moves = max(max_moves, moves)
-
-                for dr in [-1, 0, 1]:
-                    nr, nc = r + dr, c + 1
-
-                    if 0 <= nr < m and nc < n and grid[nr][nc] > grid[r][c] and dp[nr][nc] < moves + 1:
-                      dp[nr][nc] = moves + 1
-                      stack.append((nr, nc, moves + 1))
-        
-        return max_moves
+      # The answer is the maximum moves starting from any cell in the first column
+      return max(dp[row][0] for row in range(m))
     
 # Test cases
 s = Solution()
