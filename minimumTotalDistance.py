@@ -65,33 +65,30 @@ class Solution:
       dp[0][0] = 0  # No robots, no distance needed
 
       # Fill DP table
-      for i in range(n + 1):
-          for j in range(m):
-              # Skip if dp[i][j] is infinity (unreachable state)
-              if dp[i][j] == float('inf'):
-                  continue
+      for j in range(m):  # Iterate over each factory
+          position_j, limit_j = factory[j]
 
-              # Attempt to repair up to `limit_j` robots at factory `j`
-              position_j, limit_j = factory[j]
+          # Propagate previous state for each robot
+          for i in range(n + 1):
+              if dp[i][j] < float('inf'):  # Only if reachable
+                  dp[i][j + 1] = min(dp[i][j + 1], dp[i][j])
 
-              # Cumulative distance if we assign `k` robots to factory `j`
+              # Calculate cumulative distance for assigning up to limit_j robots to factory j
               cumulative_distance = 0
               for k in range(1, limit_j + 1):
                   if i + k > n:
                       break  # Prevent going out of bounds
-                  
+
                   cumulative_distance += abs(robot[i + k - 1] - position_j)
                   
                   # Update dp for i + k robots with j + 1 factories
                   dp[i + k][j + 1] = min(dp[i + k][j + 1], dp[i][j] + cumulative_distance)
 
-      # The answer is the minimum distance to repair all robots with all factories
+      # Return the minimum total distance to repair all robots with all factories
       return dp[n][m]
-
     
- 
-
 # Test cases
 s = Solution()
 print(s.minimumTotalDistance([0,4,6], [[2,2],[6,2]]) == 4)
 print(s.minimumTotalDistance([1,-1], [[-2,1],[2,1]]) == 2)
+print(s.minimumTotalDistance([9,11,99,101], [[10,1],[7,1],[14,1],[100,1],[96,1],[103,1]]) == 6)
