@@ -34,19 +34,19 @@ Hint 2
 If three or more consecutive characters are equal, keep two of them and delete the rest.
 """
 class Solution:
-    def makeFancyString(self, s: str) -> str:
-        res = ""
-        count = 0
-        for c in s:
-            if res != "" and c == res[-1]:
-                count += 1
-            else:
-                count = 0
+  def makeFancyString(self, s: str) -> str:
+    res = []
+    count = 0
+    for c in s:
+      if res and c == res[-1]:
+        count += 1
+      else:
+        count = 1
 
-            if count < 2:
-                res += c
+      if count < 3:
+        res.append(c)
 
-        return res
+    return ''.join(res)
 
 # Test Cases
 solution = Solution()
