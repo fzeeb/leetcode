@@ -46,16 +46,15 @@ Check the first character and the last character of the sentence.
 """
 class Solution:
     def isCircularSentence(self, sentence: str) -> bool:
-        n = len(sentence)
+      words = sentence.split()
+      if words[0][0] != words[-1][-1]:
+        return False
 
-        if sentence[0] != sentence[-1]:
-            return False
+      for i in range(len(words) - 1):
+        if words[i][-1] != words[i + 1][0]:
+          return False
 
-        for i in range(0, n):
-            if sentence[i] == " " and sentence[i-1] != sentence[i+1]:
-                return False
-
-        return True
+      return True
 
 # Test Cases
 s = Solution()
