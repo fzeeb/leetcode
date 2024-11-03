@@ -17,16 +17,9 @@ s and goal consist of lowercase English letters.
 """
 class Solution:
     def rotateString(self, s: str, goal: str) -> bool:
-        s_list, goal_list = list(s), list(goal)
-        shifts = 0
-        while s_list != goal_list:
-            tmp = s_list.pop(0)
-            s_list.append(tmp)
-            shifts += 1
-            if shifts == len(s):
-                return False
-
-        return True
+      if len(s) != len(goal):
+        return False
+      return goal in (s + s)
     
 # Test Cases
 s = Solution()
