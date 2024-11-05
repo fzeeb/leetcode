@@ -38,15 +38,7 @@ After noticing the first hint, we can decompose the whole string into disjoint b
 """
 class Solution:
     def minChanges(self, s: str) -> int:
-        count = 0
-
-        for i in range(0, len(s), 2):
-            substr = s[i:i+2]
-            
-            if substr[0] != substr[1]:
-                count += 1
-
-        return count
+      return sum(1 for i in range(0, len(s), 2) if s[i] != s[i+1])
 
 # Test Cases
 s = Solution()
