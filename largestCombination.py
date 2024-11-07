@@ -27,30 +27,18 @@ Constraints:
 from typing import List
 class Solution:
     def largestCombination(self, candidates: List[int]) -> int:
-      # Create an array to store all possible combinations
-      combinations = []
-      # Create a helper function to generate all possible combinations with two or more elements
-      def generateCombinations(arr, start, path, combinations):
-        if len(path) > 1:
-          combinations.append(path)
-        for i in range(start, len(arr)):
-          generateCombinations(arr, i+1, path+[arr[i]], combinations)
-
-      # Generate all possible combinations
-      generateCombinations(candidates, 0, [], combinations)
-      
-      # Get the bitwise AND of all combinations and store the size of the largest combination
-      largest = 0
-      for combination in combinations:
-        bitwiseAND = combination[0]
-        for i in range(1, len(combination)):
-          bitwiseAND &= combination[i]
-        if bitwiseAND > 0:
-          largest = max(largest, len(combination))
-     
-      return largest
+        max_count = 0
+        # Iterate over each bit position (0 to 31 for 32-bit integers)
+        for bit in range(32):
+            count = 0
+            for candidate in candidates:
+                if candidate & (1 << bit):
+                    count += 1
+            max_count = max(max_count, count)
+        return max_count
         
 # Test Cases
 s = Solution()
 print(s.largestCombination([16,17,71,62,12,24,14]) == 4)
 print(s.largestCombination([8,8]) == 2) 
+print(s.largestCombination([13,44,58,17,23,13,87,79,91,47,86,90,4,93,18,75,29,66,43,60,19,3,28]) == 14) 
