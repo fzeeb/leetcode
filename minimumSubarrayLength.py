@@ -37,21 +37,34 @@ So the number of different results for each nums[i] is at most the number of bit
 """
 from typing import List
 class Solution:
-  def minimumSubarrayLength(self, nums: List[int], k: int) -> int:
-    n = len(nums)
-    min_len = float('inf')
-
-    for i in range(n):
-      curr_or = 0
-      for j in range(i, n):
-        curr_or |= nums[j]
-        if curr_or >= k:
-          min_len = min(min_len, j - i + 1)
-          break
-
-    return min_len if min_len != float('inf') else -1
-
-
+    def minimumSubarrayLength(self, nums, k):
+        min_length = float('inf')
+        current_ors = {}
+        
+        for num in nums:
+            new_ors = {}
+            # Start a new subarray with num
+            new_ors[num] = 1
+            
+            for or_value, length in current_ors.items():
+                new_or = or_value | num
+                new_length = length + 1
+                if new_or in new_ors:
+                    if new_length < new_ors[new_or]:
+                        new_ors[new_or] = new_length
+                else:
+                    new_ors[new_or] = new_length
+            
+            # Update min_length if any OR value >= k
+            for or_value, length in new_ors.items():
+                if or_value >= k:
+                    if length < min_length:
+                        min_length = length
+            
+            current_ors = new_ors
+        
+        return -1 if min_length == float('inf') else min_length
+    
 
 # Test Cases
 s = Solution()
