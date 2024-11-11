@@ -36,24 +36,32 @@ The most optimal prime to subtract from nums[i] is the one that makes nums[i] th
 from typing import List
 class Solution:
     def primeSubOperation(self, nums: List[int]) -> bool:
+        primes = []
+        for num in range(2, 1000):
+            for i in range(2, (num//2)+1):
+                if (num % i) == 0:
+                    break
+            else:
+                primes.append(num)
 
-        def findLargestPrime(num):
-            while True:
-                num -= 1
-                if num > 1:
-                    for i in range(2, (num//2)+1):
-                        if (num % i) == 0:
-                            break
-                    else:
-                        return num
-                else:
-                    return 0
-
+        def findOptimalPrime(curr_num, prev_num):
+            # search for largest prime less than curr_num
+            for prime in primes[::-1]:
+                if prime < curr_num and curr_num - prime > prev_num:
+                    return prime
+            return 0
 
         for i in range(len(nums)):
             if all(nums[j] < nums[j + 1] for j in range(len(nums) - 1)):
                 return True
-            nums[i] -= findLargestPrime(nums[i])
+            
+            curr_num = nums[i]
+            if i > 0:
+                prev_num = nums[i-1]
+            else:
+                prev_num = 0
+
+            nums[i] -= findOptimalPrime(curr_num, prev_num)
 
         return False
 
