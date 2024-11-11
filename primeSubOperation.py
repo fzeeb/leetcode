@@ -46,10 +46,12 @@ class Solution:
                             break
                     else:
                         return num
+                else:
+                    return 0
 
 
         for i in range(len(nums)):
-            if nums == sorted(nums):
+            if all(nums[j] < nums[j + 1] for j in range(len(nums) - 1)):
                 return True
             nums[i] -= findLargestPrime(nums[i])
 
@@ -60,3 +62,5 @@ s = Solution()
 print(s.primeSubOperation([4,9,6,10]))  # Expected Output: True
 print(s.primeSubOperation([6,8,11,12]))  # Expected Output: True
 print(s.primeSubOperation([5,8,3]))  # Expected Output: False
+print(s.primeSubOperation([2,2]))  # Expected Output: False
+print(s.primeSubOperation([15,20,17,7,16]))  # Expected Output: True
