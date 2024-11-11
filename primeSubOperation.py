@@ -34,6 +34,7 @@ Hint 2
 The most optimal prime to subtract from nums[i] is the one that makes nums[i] the smallest as possible and greater than nums[i-1].
 """
 from typing import List
+from bisect import bisect_left
 class Solution:
     def primeSubOperation(self, nums: List[int]) -> bool:
         primes = []
@@ -45,10 +46,12 @@ class Solution:
                 primes.append(num)
 
         def findOptimalPrime(curr_num, prev_num):
-            # search for largest prime less than curr_num
-            for prime in primes[::-1]:
-                if prime < curr_num and curr_num - prime > prev_num:
-                    return prime
+            idx = bisect_left(primes, curr_num) - 1
+            while idx >= 0:
+              prime = primes[idx]
+              if curr_num - prime > prev_num:
+                return prime
+              idx -= 1
             return 0
 
         for i in range(len(nums)):
