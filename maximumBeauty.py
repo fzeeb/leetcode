@@ -46,11 +46,18 @@ class Solution:
     def maximumBeauty(self, items: List[List[int]], queries: List[int]) -> List[int]:
         answer = [0] * len(queries)
 
-        for i in range(len(queries)):
-            max_beauty = 0
-            for item in items:
-                if item[0] <= queries[i]:
-                    max_beauty = max(max_beauty, item[1])
+        # Sort items by price and beauty
+        items.sort()
+        # Sort queries and keep track of original indices
+        sorted_queries = sorted((q, i) for i, q in enumerate(queries))
+        
+        max_beauty = 0
+        j = 0
+        for query, i in sorted_queries:
+            # Update max_beauty for current query
+            while j < len(items) and items[j][0] <= query:
+              max_beauty = max(max_beauty, items[j][1])
+              j += 1
             answer[i] = max_beauty
 
         return answer
