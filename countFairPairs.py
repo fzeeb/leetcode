@@ -21,27 +21,20 @@ nums.length == n
 -10^9 <= lower <= upper <= 10^9
 """
 from typing import List
+from bisect import bisect_left, bisect_right
 
 class Solution:
     def countFairPairs(self, nums: List[int], lower: int, upper: int) -> int:
+        
+        nums.sort()
         n = len(nums)
         answer = 0
-        nums.sort()
         
-        left = 0
-        right = 1
-
-        while left < n - 1:
-            mid = nums[left] + nums[right]
-            if 0 <= left and left < right and right < n and lower <= mid and mid <= upper:
-                answer += 1
-            if right < n - 1:
-                right += 1
-            else:
-                left += 1
-                right = left + 1
-
-
+        for i in range(n):
+            left = bisect_left(nums, lower - nums[i], i + 1)
+            right = bisect_right(nums, upper - nums[i], i + 1)
+            answer += right - left
+        
         return answer
     
 # Test Cases
