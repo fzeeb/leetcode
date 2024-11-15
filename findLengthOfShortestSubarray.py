@@ -35,23 +35,37 @@ class Solution:
     def findLengthOfShortestSubarray(self, arr: List[int]) -> int:
         n = len(arr)
 
-        if arr == sorted(arr):
+        # Find the longest non-decreasing subarray starting from the beginning
+        left = 0
+        while left + 1 < n and arr[left] <= arr[left + 1]:
+            left += 1
+
+        # If the entire array is non-decreasing, return 0
+        if left == n - 1:
             return 0
-
-        if arr == sorted(arr, reverse=True):
-            return n-1
-
-        remove = []
-
-        for i in range(0, n-1):
-            if arr[i] > arr[i+1]:
-                remove.append(arr[i])
-                remove.append(arr[i+1])
         
-        return len(set(remove))
+        # Find the longest non-decreasing subarray ending at the end
+        right = n - 1
+        while right > 0 and arr[right - 1] <= arr[right]:
+            right -= 1
+
+        # Remove either the prefix or the suffix
+        result = min(n - left - 1, right)
+
+        # Try merging prefix and suffix
+        i, j = 0, right
+        while i <= left and j < n:
+            if arr[i] <= arr[j]:
+                result = min(result, j - i - 1)
+                i += 1
+            else:
+                j += 1
+                
+        return result
     
 # Test cases
 s = Solution()
 print(s.findLengthOfShortestSubarray([1,2,3,10,4,2,3,5])) # 3
 print(s.findLengthOfShortestSubarray([5,4,3,2,1])) # 4
 print(s.findLengthOfShortestSubarray([1,2,3])) # 0
+print(s.findLengthOfShortestSubarray([2,2,2,1,1,1])) # 3
