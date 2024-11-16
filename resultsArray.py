@@ -39,12 +39,17 @@ class Solution:
     def resultsArray(self, nums: List[int], k: int) -> List[int]:
         n = len(nums)
         results = []
+        
         for i in range(n - k + 1):
             subarray = nums[i:i + k]
-            if subarray == sorted(subarray) and subarray[-1] - subarray[0] == k - 1:
+            # Check if subarray is strictly increasing
+            is_sorted = all(subarray[j] < subarray[j + 1] for j in range(k - 1))
+            # Check if difference between max and min is k-1
+            if is_sorted and max(subarray) - min(subarray) == k - 1:
                 results.append(subarray[-1])
             else:
                 results.append(-1)
+                
         return results
         
 
@@ -53,3 +58,4 @@ s = Solution()
 print(s.resultsArray([1,2,3,4,3,2,5], 3)) # [3,4,-1,-1,-1]
 print(s.resultsArray([2,2,2,2,2], 4)) # [-1,-1]
 print(s.resultsArray([3,2,3,2,3,2], 2)) # [-1,3,-1,3,-1]
+print(s.resultsArray([1,2,2,4,2], 4)) # [-1,-1]
