@@ -37,24 +37,39 @@ Hint 3
 Iterate through each subarray of size k and keep track of the sum of the subarray and the frequency of each element.
 """
 from typing import List
+from collections import defaultdict
 
 class Solution:
     def maximumSubarraySum(self, nums: List[int], k: int) -> int:
         n = len(nums)
+        if k > n:
+            return 0
+
+        # Hash map to store the frequency of elements in the current window
+        freq = defaultdict(int)
+        window_sum = 0
         max_sum = 0
+        
+        for i in range(n):
+            # Add the new element to the window
+            window_sum += nums[i]
+            freq[nums[i]] += 1
 
-        def is_distinct(array):
-            return len(array) == len(set(array))
+            # If the window size exceeds k, remove the oldest element
+            if i >= k:
+                window_sum -= nums[i - k]
+                freq[nums[i - k]] -= 1
+                if freq[nums[i - k]] == 0:
+                    del freq[nums[i - k]]
 
-        for i in range(n+1-k):
-            sub_array = nums[i:i+k]
-            if is_distinct(sub_array) is True:
-                max_sum = max(max_sum, sum(sub_array))
+            # Check if the window is valid and update max_sum
+            if i >= k - 1 and len(freq) == k:  # Valid window has k distinct elements
+                max_sum = max(max_sum, window_sum)
 
         return max_sum
-        
+
 # Test Cases
 s = Solution()
-print(s.maximumSubarraySum([1,5,4,2,9,9,9], 3)) # 15
-print(s.maximumSubarraySum([4,4,4], 3)) # 0
-print(s.maximumSubarraySum([1,2,3,4,5], 3)) # 12
+print(s.maximumSubarraySum([1, 5, 4, 2, 9, 9, 9], 3))  # 15
+print(s.maximumSubarraySum([4, 4, 4], 3))  # 0
+print(s.maximumSubarraySum([1, 2, 3, 4, 5], 3))  # 12
