@@ -30,33 +30,47 @@ If you take x characters from the left side, what is the minimum number of chara
 Hint 3
 Use a two-pointers approach to avoid computing the same information multiple times.
 """
-from math import inf
+from collections import Counter
 
 class Solution:
     def takeCharacters(self, s: str, k: int) -> int:
-        if s.count('a') < k or s.count('b') < k or s.count('c') < k:
+
+        # Step 1: Count the frequency of each character in the string
+        freq = Counter(s)
+        print(f'freq: {freq}')
+
+        # Step 2: If any character has fewer than k occurrences, return -1
+        if any(freq[char] < k for char in "abc"):
             return -1
 
+        # Step 3: Calculate the needed frequency for each character to be removed
         n = len(s)
-        left = 0
-        right = n - 1
-        result = float(inf)
+        needed = {char: freq[char] - k for char in "abc"}
+        current_window = Counter()
+        print(f'needed: {needed}')
 
-        while left <= n:
-            tmp_str = s[0:left] + s[right:n]
-            print(tmp_str)
-            if tmp_str.count('a') >= k and tmp_str.count('b') >= k and tmp_str.count('c') >= k:
-                result = min(result, len(tmp_str))
-                left += 1
-                right = n - 1
-            
-            right -= 1
+        l = 0
+        max_valid_window = 0
 
+        # Step 4: Use a sliding window to find the largest valid window that retains enough characters
+        for r in range(n):
+            current_window[s[r]] += 1
 
-        return result
+            # If the window becomes invalid, shrink it from the left
+            while any(current_window[char] > needed[char] for char in "abc"):
+                current_window[s[l]] -= 1
+                l += 1
+
+            # Update the maximum valid window size
+            max_valid_window = max(max_valid_window, r - l + 1)
+
+        # Step 5: The minimum time is the complement of the largest valid window
+        return n - max_valid_window
 
 
 # Test Cases
 s = Solution()
-print(s.takeCharacters("aabaaaacaabc", 2)) # 8
-print(s.takeCharacters("a", 1)) # -1
+print(s.takeCharacters("aabaaaacaabc", 2))  # Expected: 8
+print(s.takeCharacters("a", 1))  # Expected: -1
+print(s.takeCharacters("a", 0))  # Expected: 0
+print(s.takeCharacters("aabbccca", 2))  # Expected: 6
