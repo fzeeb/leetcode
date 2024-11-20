@@ -30,8 +30,30 @@ If you take x characters from the left side, what is the minimum number of chara
 Hint 3
 Use a two-pointers approach to avoid computing the same information multiple times.
 """
+from math import inf
+
 class Solution:
     def takeCharacters(self, s: str, k: int) -> int:
+        if s.count('a') < k or s.count('b') < k or s.count('c') < k:
+            return -1
+
+        n = len(s)
+        left = 0
+        right = n - 1
+        result = float(inf)
+
+        while left <= n:
+            tmp_str = s[0:left] + s[right:n]
+            print(tmp_str)
+            if tmp_str.count('a') >= k and tmp_str.count('b') >= k and tmp_str.count('c') >= k:
+                result = min(result, len(tmp_str))
+                left += 1
+                right = n - 1
+            
+            right -= 1
+
+
+        return result
 
 
 # Test Cases
