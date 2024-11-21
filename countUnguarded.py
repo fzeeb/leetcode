@@ -36,6 +36,43 @@ from typing import List
 
 class Solution:
     def countUnguarded(self, m: int, n: int, guards: List[List[int]], walls: List[List[int]]) -> int:
+        # create a 2d Grid from m and n
+        grid = [[0] * n for _ in range(m)]
+
+        # mark the guards and walls in the grid
+        for x, y in guards:
+            grid[x][y] = 1
+        for x, y in walls:
+            grid[x][y] = -1
+
+        # get every position in the grid in the same row or column as a guard
+        for x, y in guards:
+            # Mark cells in the same row to the left of the guard
+            for j in range(y - 1, -1, -1):
+              if grid[x][j] == -1 or grid[x][j] == 1:
+               break
+              grid[x][j] = 2
+
+            # Mark cells in the same row to the right of the guard
+            for j in range(y + 1, n):
+              if grid[x][j] == -1 or grid[x][j] == 1:
+                break
+              grid[x][j] = 2
+
+            # Mark cells in the same column above the guard
+            for i in range(x - 1, -1, -1):
+              if grid[i][y] == -1 or grid[i][y] == 1:
+                break
+              grid[i][y] = 2
+
+            # Mark cells in the same column below the guard
+            for i in range(x + 1, m):
+              if grid[i][y] == -1 or grid[i][y] == 1:
+                break
+              grid[i][y] = 2
+                
+        # count the number of unguarded positions
+        return sum(1 for row in grid for cell in row if cell == 0)
 
 
 # Test Cases
