@@ -27,11 +27,23 @@ matrix[i][j] is either 0 or 1.
 Hint 1
 Flipping a subset of columns is like doing a bitwise XOR of some number K onto each row. We want rows X with X ^ K = all 0s or all 1s. This is the same as X = X^K ^K = (all 0s or all 1s) ^ K, so we want to count rows that have opposite bits set. For example, if K = 1, then we count rows X = (00000...001, or 1111....110).
 """
+from collections import Counter
 from typing import List
 
 class Solution:
     def maxEqualRowsAfterFlips(self, matrix: List[List[int]]) -> int:
-    
+        pattern_count = Counter()
+        
+        for row in matrix:
+            # Normalize each row so that the first value is 0
+            # If the first value is 1, flip the entire row
+            normalized_row = tuple(cell ^ row[0] for cell in row)
+            pattern_count[normalized_row] += 1
+        
+        # The maximum count of any pattern
+        return max(pattern_count.values())
+        
+        
 # Test Cases
 s = Solution()
 print(s.maxEqualRowsAfterFlips([[0,1],[1,1]]))  # Expected: 1
